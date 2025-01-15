@@ -10,11 +10,10 @@ export async function up(knex: Knex): Promise<void> {
 			.notNullable();
 
 		table.string('email')
+			.unique()
 			.notNullable();
     
-		table.timestamp('created_at')
-			.defaultTo(knex.fn.now())
-			.notNullable();
+		table.timestamps(true, true);
 	});
 }
 
