@@ -13,6 +13,9 @@ export async function up(knex: Knex): Promise<void> {
 			.unique()
 			.notNullable();
     
+		table.uuid('session_id')
+			.notNullable();
+
 		table.timestamps(true, true);
 	});
 }
