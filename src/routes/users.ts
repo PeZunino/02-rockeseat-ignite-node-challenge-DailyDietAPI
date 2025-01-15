@@ -9,7 +9,7 @@ export async function usersRoutes(server:FastifyInstance){
 			.select();
 
 		response.status(200)
-			.send(users);
+			.send({users});
 	});
 
 	server.post('/',async (request, response)=>{
@@ -24,11 +24,23 @@ export async function usersRoutes(server:FastifyInstance){
 			email,name
 		} = createUserSchema.parse(request.body);
   
+		const {sessionId} = request.cookies;
+
+		if(!sessionId){
+			const sessionId = randomUUID();
+
+			response.cookie('sessionId',sessionId,{
+				path:'/',
+				maxAge: 60 * 60 * 24
+			});
+		}
+
 		await knex('users')
 			.insert({
 				id: randomUUID(),
 				name,
 				email,
+				session_id:sessionId
 			});
 
 		response.status(201)
