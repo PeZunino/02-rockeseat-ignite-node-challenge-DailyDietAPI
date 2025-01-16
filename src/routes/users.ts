@@ -24,10 +24,10 @@ export async function usersRoutes(server:FastifyInstance){
 			email,name
 		} = createUserSchema.parse(request.body);
   
-		const {sessionId} = request.cookies;
+		let sessionId = request.cookies.sessionId;
 
 		if(!sessionId){
-			const sessionId = randomUUID();
+			sessionId = randomUUID();
 
 			response.cookie('sessionId',sessionId,{
 				path:'/',
@@ -43,7 +43,7 @@ export async function usersRoutes(server:FastifyInstance){
 				session_id:sessionId
 			});
 
-		response.status(201)
-			.send();
+		response.status(201);
+	
 	});
 }
