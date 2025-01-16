@@ -11,6 +11,7 @@ export function mealsRoutes(server:FastifyInstance){
 			verifySessionIdExistence
 		]
 	},async (request,response)=>{
+		
 		const deleteMealParamsSchema = z.object({
 			id: z.string()
 				.uuid()
@@ -19,14 +20,17 @@ export function mealsRoutes(server:FastifyInstance){
 		const {id} = deleteMealParamsSchema.parse(request.params);
 
 		const mealToBeRemoved = await knex('meals')
-			.where({id})
+			.where({
+				id,
+				user_id: request.user?.id
+			})
 			.first();
 
 		if(!mealToBeRemoved){
 			return response.status(404)
 				.send({message: 'meal not found'});
 		}
-
+		
 		await knex('meals')
 			.where({id})
 			.del();
@@ -44,19 +48,8 @@ export function mealsRoutes(server:FastifyInstance){
 			id: z.string()
 				.uuid()
 		});
-    
-		const {id} = updateMealParamsSchema.parse(request.params);
 
-		const mealToBeUpdated = await knex('meals')
-			.where({id})
-			.first();
-
-		if(!mealToBeUpdated){
-			return response.status(404)
-				.send({message: 'meal not found'});
-		}
-    
-		const editMealSchema = z.object({
+		const updateMealBodySchema = z.object({
 			name: z.string()
 				.nullable()
 				.optional(),
@@ -71,12 +64,26 @@ export function mealsRoutes(server:FastifyInstance){
 				.optional(),
 		});
 
+		const {id} = updateMealParamsSchema.parse(request.params);
+
+		const mealToBeUpdated = await knex('meals')
+			.where({
+				id,
+				user_id: request.user?.id
+			})
+			.first();
+
+		if(!mealToBeUpdated){
+			return response.status(404)
+				.send({message: 'Meal not found'});
+		}
+
 		const {
 			description:newValueDescription,
 			isPartOfDiet: newValueIsPartOfDiet,
 			mealTime: newValueMealTime,
 			name: newValueName
-		} = editMealSchema.parse(request.body);
+		} = updateMealBodySchema.parse(request.body);
 
 		const {
 			description: currentDescription,
@@ -125,7 +132,8 @@ export function mealsRoutes(server:FastifyInstance){
 				is_part_of_diet: isPartOfDiet,
 				mealTime:new Date(mealTime)
 					.toISOString(),
-				name
+				name,
+				user_id: request.user?.id
 			});
 
     
@@ -138,6 +146,7 @@ export function mealsRoutes(server:FastifyInstance){
 			verifySessionIdExistence
 		]
 	},async (request,response)=>{
+
 		const getMealParamsSchema = z.object({
 			id: z.string()
 				.uuid()
@@ -146,7 +155,10 @@ export function mealsRoutes(server:FastifyInstance){
 		const {id} = getMealParamsSchema.parse(request.params);
 
 		const meal = await knex('meals')
-			.where({id})
+			.where({
+				id,
+				user_id: request.user?.id
+			})
 			.first();
 
 		if(!meal){
@@ -164,13 +176,12 @@ export function mealsRoutes(server:FastifyInstance){
 		]
 	},async (request,response)=>{
 
-		const {sessionId} = request.cookies;
-
 		const meals = await knex('meals')
-			.where('user_id',sessionId)
-			.first();
+			.where('user_id',request.user?.id);
+			
 
 		response.status(200)
 			.send({meals});
 	});
+
 }
