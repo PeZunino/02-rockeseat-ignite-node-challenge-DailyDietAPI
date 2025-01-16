@@ -184,4 +184,48 @@ export function mealsRoutes(server:FastifyInstance){
 			.send({meals});
 	});
 
+	server.get('/summary', {
+		preHandler:[
+			verifySessionIdExistence
+		]
+	},async(request,response)=>{
+		
+
+		const meals = await knex('meals')
+			.where({user_id:request.user?.id})
+			.select();
+
+		const amountMealsOnDiet = meals.filter(meal=>meal.is_part_of_diet).length;
+
+		const amountMealsOutOfDiet = meals.filter(meal=>!meal.is_part_of_diet).length;
+
+		let mealOnDietStreak = 0;
+
+		let bestStreak = 0;
+
+		meals.forEach(meal=>{
+
+			if(meal.is_part_of_diet) {
+				mealOnDietStreak += 1;
+				
+				bestStreak = Math.max(bestStreak, mealOnDietStreak);
+			}else{
+				mealOnDietStreak = 0;
+
+				bestStreak = 0;
+			}
+			
+		});
+		
+
+		const summary = {
+			mealsAmount : meals.length,
+			amountMealsOnDiet,
+			amountMealsOutOfDiet,
+			mealOnDietStreak
+		};
+
+		response.status(200)
+			.send({summary});
+	});
 }
