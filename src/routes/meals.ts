@@ -93,7 +93,7 @@ export function mealsRoutes(server:FastifyInstance){
 		} = mealToBeUpdated;
 
 
-		const newMealData = {
+		const meal = {
 			description: newValueDescription ?? currentDescription,
 			is_part_of_diet: newValueIsPartOfDiet ?? currentIsPartOfDiet,
 			name: newValueName ?? currentName,
@@ -102,10 +102,10 @@ export function mealsRoutes(server:FastifyInstance){
     
 		await knex('meals')
 			.where({id})
-			.update(newMealData);
+			.update(meal);
     
 		response.status(200)
-			.send({newMealData});
+			.send({meal});
 	});
 
 	server.post('/',{
@@ -137,7 +137,7 @@ export function mealsRoutes(server:FastifyInstance){
 			});
 
     
-		response.status(200);
+		response.status(201);
 	
 	});
 
@@ -207,12 +207,14 @@ export function mealsRoutes(server:FastifyInstance){
 
 			if(meal.is_part_of_diet) {
 				mealOnDietStreak += 1;
-				
+		
 				bestStreak = Math.max(bestStreak, mealOnDietStreak);
+
 			}else{
 				mealOnDietStreak = 0;
 
-				bestStreak = 0;
+				bestStreak = Math.max(bestStreak, mealOnDietStreak);
+
 			}
 			
 		});
@@ -222,7 +224,7 @@ export function mealsRoutes(server:FastifyInstance){
 			mealsAmount : meals.length,
 			amountMealsOnDiet,
 			amountMealsOutOfDiet,
-			mealOnDietStreak
+			bestStreak
 		};
 
 		response.status(200)
