@@ -15,7 +15,7 @@
 
 A daily diet control REST API. It allows you to manage your meals, as well as providing a summary of your diet progress.
 
-Developed to better understand concepts such as query builder, cookies and tests
+Developed to better understand concepts such as query builder, cookies and tests.
 
 ## ⚙️ Features
 
