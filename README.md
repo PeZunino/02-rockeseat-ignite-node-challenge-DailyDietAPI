@@ -1,30 +1,34 @@
 # DailyDietAPI
 
+![Completed](https://img.shields.io/badge/status-completed-brightgreen)
+
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Fastify](https://img.shields.io/badge/fastify-%23000000.svg?style=for-the-badge&logo=fastify&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![Vitest](https://img.shields.io/badge/-Vitest-252529?style=for-the-badge&logo=vitest&logoColor=FCC72B)
+![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+
 ## 📜 Description
 
-A daily diet control API developed with Node.js, Fastify, and SQLite. This API allows users to create, update, delete, and view their meals, as well as providing a summary of their diet progress.
+A daily diet control REST API. It allows you to manage your meals, as well as providing a summary of your diet progress.
 
-## 💻 Technologies Used
-- **Fastify**: A fast and lightweight web framework for Node.js.
-- **Knex**: SQL query builder.
-- **SQLite3**: SQLite database.
-- **Zod**: Schema validation library.
-- **Supertest**: HTTP testing framework.
-- **Vitest**: Testing framework.
+Developed to better understand concepts such as query builder, cookies and tests
 
 ## ⚙️ Features
 
-- **User registration and management**:
+- **User registration and management:**
   - Register users with email and name.
   - Session management via cookies.
 
-- **Meal tracking**:
+- **Meal tracking:**
   - Create, update, delete, and view meals.
   - Mark meals as part of the diet or not.
   - View a summary of meals, including how many are on or off diet, and the best diet streak.
 
-- **Authentication**:
-  - Authentication is done using the `sessionId`, which is stored in a cookie.
+- **Authentication:** A ```sessionId``` is automatically generated when a user is created and is required for meal-related operations.
 
 ## 🌐 Endpoints
 
@@ -42,40 +46,39 @@ A daily diet control API developed with Node.js, Fastify, and SQLite. This API a
 
 ## 🛠️ Installation
 
+### Prerequisites
+
 - **Node.js (version 16 or above)**
 - **npm (Node.js package manager)**
-- **Environment variables for repository configuration:**
   
-To run the application, follow the steps below:
-
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/PeZunino/DailyDietAPI.git
-cd DailyDietAPI
+git clone https://github.com/PeZunino/rockeseat-ignite-node-02-challenge-DailyDietAPI.git
 ```
+2. Navigate into the project directory:
 
-2. Install the dependencies:
+```bash
+cd rockeseat-ignite-node-02-challenge-DailyDietAPI
+```
+3. Install the dependencies:
 
 ```bash
 npm install
 ```
-
-3. Set up the environment variables:
-Create a .env file in the root of the project and add the following variables
-
+4. Set up the environment variables:
+Create a ```.env``` file in the root of the project and add the following variables.
+The database is set up using SQLite. The connection string should be: ```sqlite:./database.db```
 ```bash
 DATABASE_URL=sqlite:./database.db
 PORT=3333
 ```
-
-4. Run the application:
+5. Run the application:
 
 ```bash
 npm run dev
 ```
-
-5.To run the tests, use:
+6. To run the tests, use:
 
 ```bash
 npm run test
