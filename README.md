@@ -54,12 +54,12 @@ Developed to better understand concepts such as query builder, cookies and tests
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/PeZunino/rockeseat-ignite-node-02-challenge-DailyDietAPI.git
+git clone https://github.com/PeZunino/02-rockeseat-ignite-node-challenge-DailyDietAPI.git
 ```
 2. Navigate into the project directory:
 
 ```bash
-cd rockeseat-ignite-node-02-challenge-DailyDietAPI
+cd 02-rockeseat-ignite-node-challenge-DailyDietAPI
 ```
 3. Install the dependencies:
 
